@@ -1,15 +1,23 @@
 ---
-# Goal: rt1.penguinpages.local  172.16.100.1  # collect inventory
-# Documentation: 
--name: this will automate our firewall
--hosts: pfsense
-  roles:
-  - pfsense_setup
+- hosts: "pfsense"
+  become: true
+  vars:
+    created_username: ansible
 
--name: Collect PFSense Firewall Inventory
-  # set_fact:
-  #   host_timezone: America/Chicago
-  #   host_ntp_server: 216.239.35.0:123
-tasks:
--name: pfsense_setup
+  tasks:
+    - name: Install 
+      apt:
+        name: pfsense
+        state: latest
+        update_cache: true
 
+
+    - name: Update apt and install required system packages
+      apt:
+        pkg:
+          - curl
+          - vim
+          - git
+          - ufw
+        state: latest
+        update_cache: true
